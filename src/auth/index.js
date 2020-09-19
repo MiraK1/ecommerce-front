@@ -18,7 +18,6 @@ export const signup = (user) => {
 };
 
 export const signin = (user) => {
-	console.log(process.env.REACT_APP_API_URL);
 	return fetch(`${API}/signin`, {
 		method: "POST",
 		headers: {
