@@ -10,7 +10,7 @@ import Card from "./Card";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 // import "braintree-web"; // not using this package
-// import DropIn from 'braintree-web-drop-in-react';
+import DropIn from "braintree-web-drop-in-react";
 
 const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
 	const [data, setData] = useState({
@@ -31,18 +31,16 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
 				return;
 			}
 			if (data.error) {
-				console.log(data.error);
-				setData({ ...data, error: data.error });
+				setData((prevData) => ({ ...prevData, error: data.error }));
 			} else {
-				console.log(data);
-				setData({ clientToken: data.clientToken });
+				setData((prevData) => ({ ...prevData, clientToken: data.clientToken }));
 			}
 		});
 	};
 
 	useEffect(() => {
 		getToken(userId, token);
-	}, []);
+	}, [userId, token]);
 
 	const handleAddress = (event) => {
 		setData({ ...data, address: event.target.value });
@@ -67,7 +65,7 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
 	let deliveryAddress = data.address;
 
 	const buy = () => {
-		setData({ loading: true });
+		setData((prevData) => ({ ...prevData, loading: true }));
 		// send the nonce to your server
 		// nonce = data.instance.requestPaymentMethod()
 		let nonce;
@@ -90,7 +88,7 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
 
 				processPayment(userId, token, paymentData)
 					.then((response) => {
-						console.log(response);
+						// console.log(response);
 						// empty cart
 						// create order
 
@@ -114,12 +112,12 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
 							})
 							.catch((error) => {
 								console.log(error);
-								setData({ loading: false });
+								setData((prevData) => ({ ...prevData, loading: false }));
 							});
 					})
 					.catch((error) => {
 						console.log(error);
-						setData({ loading: false });
+						setData({ ...data, loading: false });
 					});
 			})
 			.catch((error) => {
@@ -142,7 +140,7 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
 						/>
 					</div>
 
-					{/* <DropIn
+					<DropIn
 						options={{
 							authorization: data.clientToken,
 							paypal: {
@@ -150,7 +148,7 @@ const Checkout = ({ products, setRun = (f) => f, run = undefined }) => {
 							},
 						}}
 						onInstance={(instance) => (data.instance = instance)}
-					/> */}
+					/>
 					<button onClick={buy} className='btn btn-success btn-block'>
 						Pay
 					</button>
