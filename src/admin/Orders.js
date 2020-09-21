@@ -76,8 +76,8 @@ const Orders = () => {
 			<h3 className='mark mb-4'>Status: {o.status}</h3>
 			<select
 				className='form-control'
-				onChange={(e) => handleStatusChange(e, o._id)}>
-				<option>Update Status</option>
+				onChange={(e) => handleStatusChange(e, o._id)}
+				value={o.status}>
 				{statusValues.map((status, index) => (
 					<option key={index} value={status}>
 						{status}
@@ -103,7 +103,7 @@ const Orders = () => {
 								key={oIndex}
 								style={{ borderBottom: "5px solid indigo" }}>
 								<h2 className='mb-5'>
-									<span className='bg-primary'>Order ID: {o._id}</span>
+									<span className='bg-primary p-2'>Order ID: {o._id}</span>
 								</h2>
 
 								<ul className='list-group mb-2'>

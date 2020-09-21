@@ -75,6 +75,8 @@ const Dashboard = () => {
 							return (
 								<div>
 									<hr />
+									statut:{h.status}
+									<hr />
 									{h.products.map((p, i) => {
 										return (
 											<div key={i}>
